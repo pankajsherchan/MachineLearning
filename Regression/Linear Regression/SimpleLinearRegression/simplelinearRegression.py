@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 
 def trainData(X, Y, theta, learning_rate, iterations):
 
-    #theta = np.linalg.solve( np.dot(X.T, X), np.dot(X.T, Y) )
-
     costs = []
     for i in range(iterations):
         Ytheta = X.dot(theta)
@@ -16,13 +14,6 @@ def trainData(X, Y, theta, learning_rate, iterations):
         print(mse, 'iteration' , i)
         costs.append(mse)
 
-    # for t in range(1000):
-    #     Yhat = X.dot(w)
-    #     delta = Yhat - Y
-    #     w = w - learning_rate * X.T.dot(delta)
-    #     mse = delta.dot(delta) / N
-    #     costs.append(mse)
-
     plt.plot(costs)
     plt.show()
     return theta
@@ -30,22 +21,14 @@ def trainData(X, Y, theta, learning_rate, iterations):
 def testData(X, Y, theta, originalX):
 
     Ytheta = X.dot(theta)
-
     plt.scatter(originalX, Y)
     plt.plot(originalX, Ytheta)
     plt.show()
     return 0
 
-def scale_dataset(X):
-    # scale input dataset and return z where z = (x - mean)/standard deviation
 
-    for col in range(1, X.shape[1]):
-        mean = np.mean(X[:, col])
-        std = np.std(X[:, col])
-        X[:, col] = (X[:, col] - mean)/std
-    return X
 
-def scale_dataset_y(Y):
+def scale_dataset(Y):
         mean = np.mean(Y)
         std = np.std(Y)
         Y = (Y - mean) / std
@@ -87,8 +70,8 @@ def main():
 
 
 
-    X = scale_dataset_y(X)
-    Y = scale_dataset_y(Y)
+    X = scale_dataset(X)
+    Y = scale_dataset(Y)
 
     plt.scatter(X, Y)
     plt.show()
@@ -96,9 +79,6 @@ def main():
     N = len(X)
     X = np.vstack([np.ones(N), X]).T
 
-    # m,c = np.polyfit(X, Y, 1)
-    # print(m)
-    # print(c)
     D = 2
     w = np.random.randn(D) / np.sqrt(D)
     initial_theta = np.array([0.5, 0.5])
